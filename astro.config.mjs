@@ -6,20 +6,33 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: 'My Docs',
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
+			title: 'The Arkhive',
+			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/jamesalday/arkhive' }],
 			sidebar: [
+				// {
+				// 	label: 'Guides',
+				// 	items: [
+				// 		// Each item here is one entry in the navigation menu.
+				// 		{ label: 'Example Guide', slug: 'guides/example' },
+				// 	],
+				// },
 				{
-					label: 'Guides',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
-					],
+					label: 'Regions',
+					items: [{ autogenerate: { directory: 'region' } }],
 				},
 				{
-					label: 'Reference',
-					items: [{ autogenerate: { directory: 'reference' } }],
+					label: 'Lore',
+					items: [{ autogenerate: { directory: 'lore' } }],
 				},
+				{
+					label: 'Group',
+					items: [{ autogenerate: { directory: 'group' } }],
+				},
+				{
+					label: 'Rules',
+					items: [{ autogenerate: { directory: 'rule' } }],
+				}
+				
 			],
 		}),
 	],
