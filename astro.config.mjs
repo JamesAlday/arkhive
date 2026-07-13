@@ -20,22 +20,37 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
+					label: 'Characters',
+					items: [{ autogenerate: { directory: 'character' } }],
+				},
+				{
+					label: 'NPCs',
+					items: [{ autogenerate: { directory: 'npc' } }],
+				},
+				{
+					label: 'Sessions',
+					items: [{ autogenerate: { directory: 'session' } }],
+				},
+				{
 					label: 'Regions',
 					items: [{ autogenerate: { directory: 'region' } }],
+				},
+				{
+					label: 'Locations',
+					items: [{ autogenerate: { directory: 'location' } }],
 				},
 				{
 					label: 'Lore',
 					items: [{ autogenerate: { directory: 'lore' } }],
 				},
 				{
-					label: 'Group',
+					label: 'Groups',
 					items: [{ autogenerate: { directory: 'group' } }],
 				},
 				{
 					label: 'Rules',
 					items: [{ autogenerate: { directory: 'rule' } }],
 				}
-				
 			],
 		}),
 	],
