@@ -5,6 +5,7 @@ import starlightTags from 'starlight-tags';
 
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
+import { starlightBasePath } from 'starlight-base-path';
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,9 +16,12 @@ export default defineConfig({
 		starlight({
 			title: 'The Arkhive',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/jamesalday/arkhive' }],
-			plugins: [starlightTags({
-				onInlineTagsNotFound: 'create',
-			})],
+			plugins: [
+				starlightBasePath(),
+				starlightTags({
+					onInlineTagsNotFound: 'create',
+				})
+			],
 			components: {
 				PageTitle: './src/components/PageTitleOverride.astro',
 			},
