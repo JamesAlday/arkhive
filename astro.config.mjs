@@ -28,39 +28,39 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'Sessions',
-					items: [{ autogenerate: { directory: 'session' } }],
+					items: [{ autogenerate: { directory: 'codex/session' } }],
 				},
 				{
 					label: 'Characters',
-					items: [{ autogenerate: { directory: 'character' } }],
+					items: [{ autogenerate: { directory: 'codex/character' } }],
 				},
 				{
 					label: 'NPCs',
-					items: [{ autogenerate: { directory: 'npc' } }],
+					items: [{ autogenerate: { directory: 'codex/npc' } }],
 				},
 				{
 					label: 'Regions',
-					items: [{ autogenerate: { directory: 'region' } }],
+					items: [{ autogenerate: { directory: 'codex/region' } }],
 				},
 				{
 					label: 'Locations',
-					items: [{ autogenerate: { directory: 'location' } }],
+					items: [{ autogenerate: { directory: 'codex/location' } }],
 				},
 				{
 					label: 'Lore',
-					items: [{ autogenerate: { directory: 'lore' } }],
+					items: [{ autogenerate: { directory: 'codex/lore' } }],
 				},
 				{
 					label: 'Groups',
-					items: [{ autogenerate: { directory: 'group' } }],
+					items: [{ autogenerate: { directory: 'codex/group' } }],
 				},
 				{
 					label: 'Rules',
-					items: [{ autogenerate: { directory: 'rule' } }],
+					items: [{ autogenerate: { directory: 'codex/rule' } }],
 				},
 				{
 					label: 'Reference',
-					items: [{ autogenerate: { directory: 'reference' } }],
+					items: [{ autogenerate: { directory: 'codex/reference' } }],
 				}
 			],
 		}),
