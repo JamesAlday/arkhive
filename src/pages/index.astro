@@ -5,7 +5,7 @@ import AppShell from "../components/shell/AppShell.astro";
 import Panel from "../components/core/Panel.astro";
 import Text from "../components/core/Text.astro";
 
-const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
+const withBase = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
 const ctaPrimary =
   "inline-flex min-h-10 items-center justify-center gap-2 rounded-sm border border-[var(--sf-border-strong)] bg-[color-mix(in_oklab,var(--sf-color-primary)_18%,var(--sf-bg-elevated))] px-5 py-2 font-sf-mono text-xs uppercase tracking-[0.2em] text-sf-text shadow-[0_0_0_1px_color-mix(in_oklab,var(--sf-color-primary)_25%,transparent),0_0_24px_var(--sf-glow-primary)] transition hover:shadow-[0_0_0_1px_var(--sf-color-primary),0_0_36px_var(--sf-glow-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sf-primary active:scale-[0.98]";

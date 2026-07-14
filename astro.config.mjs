@@ -8,8 +8,8 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://jamesalday.com/arkhive',
-	base: '/arkhive/',
+	site: 'https://jamesalday.github.io',
+	base: '/arkhive',
 
 	integrations: [
 		starlight({
