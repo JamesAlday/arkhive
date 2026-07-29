@@ -1,14 +1,16 @@
 ---
 const path = Astro.url.pathname;
 
+const BASE_URL = import.meta.env.BASE_URL;
+
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/components", label: "Components" },
-  { href: "/kit", label: "Kit" },
-  { href: "/settings", label: "Settings" },
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/map", label: "Map" },
-  { href: "/intel", label: "Intel" },
+  { href: `${BASE_URL}/`, label: "Home" },
+  { href: `${BASE_URL}/codex`, label: "Codex" },
+  // { href: "/kit", label: "Kit" },
+  { href: `${BASE_URL}/settings`, label: "Settings" },
+  { href: `${BASE_URL}/dashboard`, label: "Dashboard" },
+  // { href: "/map", label: "Map" },
+  // { href: "/intel", label: "Intel" },
 ] as const;
 
 function isActive(href: string): boolean {
@@ -22,7 +24,7 @@ function isActive(href: string): boolean {
   aria-label="Primary"
 >
   <div class="flex flex-nowrap items-center gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-    <span class="mr-2 font-sf-display text-[0.65rem] uppercase tracking-[0.22em] text-sf-muted">Sci‑Fi UI</span>
+    <span class="mr-2 font-sf-display text-[0.65rem] uppercase tracking-[0.22em] text-sf-muted">The Arkhive</span>
     {
       links.map((l) => (
         <a

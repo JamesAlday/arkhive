@@ -13,6 +13,7 @@ export default defineConfig({
 	base: '/arkhive',
 
 	integrations: [
+		react(),
 		starlight({
 			title: 'The Arkhive',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/jamesalday/arkhive' }],
@@ -24,6 +25,7 @@ export default defineConfig({
 			],
 			components: {
 				PageTitle: './src/components/PageTitleOverride.astro',
+				MarkdownContent: './src/components/MarkdownContentOverride.astro',
 			},
 			sidebar: [
 				{

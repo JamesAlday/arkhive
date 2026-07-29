@@ -30,6 +30,7 @@ const ctaGhost =
         </p>
         <div class="flex flex-wrap gap-3">
           <a href={withBase('/codex')} class={ctaPrimary}>Explore the Codex</a>
+          <a href={withBase('/settings')} class={ctaPrimary}>Settings</a>
           <!-- 
           <a href="/settings" class={ctaSecondary}>Settings</a>
           <a href="/dashboard" class={ctaGhost}>Dashboard</a> 
@@ -38,9 +39,11 @@ const ctaGhost =
       </div>
       <div class="grid flex-1 gap-3 sm:grid-cols-2 lg:max-w-md">
         <Panel variant="primary" glow class="sm:col-span-2">
-          <Text variant="label" class="text-sf-secondary">Why Astro</Text>
+          <Text variant="label" class="text-sf-secondary">
+            <a href={withBase('/settings')}>Settings</a>
+        </Text>
           <p class="mt-2 text-sm leading-relaxed text-sf-muted">
-            Prerender by default, islands when you opt in — same tokens and shell across every page.
+            Theme, appearance, overlays, motion, and UI sound.
           </p>
         </Panel>
         <Panel variant="secondary" class="border border-[var(--sf-border-subtle)]">

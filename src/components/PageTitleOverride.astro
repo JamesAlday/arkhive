@@ -4,9 +4,11 @@
  */
 import StarlightPageTitle from '@astrojs/starlight/components/PageTitle.astro';
 import { PageTags } from 'starlight-tags/components';
+
+const { ['components']: _, ...safeProps } = Astro.props;
 ---
 
-<StarlightPageTitle {...Astro.props} />
+<StarlightPageTitle {...safeProps} />
 <PageTags layout="inline" variant="outline" size="small" />
 
 <style>
