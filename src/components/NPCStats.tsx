@@ -16,20 +16,14 @@ export default function NPCStats({ id, data }: any) {
     const sessionNumbers = appearances.map(s => s.data.session);
 
     return (
-        <section className="npc-section">
-            <h3>NPC Details</h3>
+        <section>
+            <h3>Details</h3>
             <p>Faction: {data?.faction || "Unknown"}</p>
             <p>Occupation: {data?.occupation || "None Listed"}</p>
             <p>Status: {data?.status || "Unknown"}</p>
             <p>First Appearance: {firstAppearance?.data.session || "Not listed"}</p>
             <p>Latest Appearance: {latestAppearance?.data.session || "Not listed"}</p>
             <p>Appears in: {sessionNumbers.join(", ") || "Not listed"}</p>
-
-            <style>{`
-                .npc-section {
-                    margin-top: 2rem;
-                }
-            `}</style>
         </section>
     )
 }

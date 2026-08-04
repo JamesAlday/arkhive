@@ -20,6 +20,13 @@ else if (entry.id.startsWith("codex/npc/"))
     pageType = "npc";
 
 ---
+
+{ pageType === "npc" && (
+  <>
+  <NPCStats id={entry.id} data={data} />
+  </>
+)}
+
 <Default {...safeProps}>
   <slot />
 </Default>
@@ -38,9 +45,3 @@ else if (entry.id.startsWith("codex/npc/"))
     </>
   )
 }
-
-{ pageType === "npc" && (
-  <>
-  <NPCStats id={entry.id} data={data} />
-  </>
-)}
