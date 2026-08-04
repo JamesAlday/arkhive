@@ -3,6 +3,7 @@ import type { Props } from '@astrojs/starlight/props';
 import Default from '@astrojs/starlight/components/MarkdownContent.astro';
 import XPTable from './XPTable';
 import NPCList from './NPCList';
+import NPCStats from './NPCStats';
 
 const { ['components']: _, ...safeProps } = Astro.props;
 
@@ -37,3 +38,9 @@ else if (entry.id.startsWith("codex/npc/"))
     </>
   )
 }
+
+{ pageType === "npc" && (
+  <>
+  <NPCStats id={entry.id} data={data} />
+  </>
+)}

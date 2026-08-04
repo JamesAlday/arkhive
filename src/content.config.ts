@@ -4,6 +4,7 @@ import { docsSchema } from '@astrojs/starlight/schema';
 import { starlightTagsExtension } from 'starlight-tags/schema';
 import { z } from 'astro/zod';
 
+// Frontmatter schema for session pages
 const sessionFields = z.object({
 	title: z.string(),
 	description: z.string(),
@@ -51,14 +52,30 @@ const sessionFields = z.object({
 	).default([]),
 }).partial();
 
-const combinedSchema = starlightTagsExtension.merge(sessionFields);
+// Frontmatter schema for NPC pages
+const npcFields = z.object({
+	title: z.string(),
+	aliases: z.array(z.string()),
+	species: z.string(),
+	gender: z.string(),
+	faction: z.string(),
+	occupation: z.string(),
+	status: z.string(),
+}).partial();
+
+const combinedSchema = z.object({
+	...starlightTagsExtension.shape,
+	...sessionFields.shape,
+	...npcFields.shape,
+});
 
 const docs = defineCollection({ 
 	loader: docsLoader(), 
-	schema: docsSchema({ extend: combinedSchema }) 
+	schema: docsSchema({extend: combinedSchema}),
 });
 
 export type Session = z.infer<typeof sessionFields>;
+export type NPC = z.infer<typeof npcFields>;
 
 export const collections = {
 	docs: docs,

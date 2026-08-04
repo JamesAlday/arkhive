@@ -32,6 +32,9 @@ encounters:
     xpTotal: 200
 
 npcs:
+  - id: ozwald-firemountain
+    name: Ozwald Firemountain
+    role: Portal Maintenance Worker
   - id: mr-doyle
     name: Mr. Doyle
     role: mob boss
