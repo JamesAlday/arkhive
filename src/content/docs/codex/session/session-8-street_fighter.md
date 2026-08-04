@@ -31,6 +31,14 @@ encounters:
     xpEach: 200
     xpTotal: 200
 
+npcs:
+  - id: mr-doyle
+    name: Mr. Doyle
+    role: mob boss
+  - id: thatcher-cobb
+    name: Thatcher Cobb
+    role: overzealous street fighter
+
 tableOfContents: false
 tags:
     - session-log
@@ -47,7 +55,3 @@ Later, runners delivered a message from Seran that they should return to Ozwald 
 The party followed and found themselves in an orchard. They followed a dirt path that led out of the orchard and found a small farming village.
 
 Villagers told them that Seran was either at the salon taking place in the ballroom or the spa. The party took the path to the spa and started looking for Seran.
-
-NPCs:
-- Mr. Doyle, boss of the Mire'duar
-- Thatcher Cobb, overzealous street fighter

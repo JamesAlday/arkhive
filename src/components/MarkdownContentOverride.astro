@@ -2,33 +2,38 @@
 import type { Props } from '@astrojs/starlight/props';
 import Default from '@astrojs/starlight/components/MarkdownContent.astro';
 import XPTable from './XPTable';
+import NPCList from './NPCList';
 
 const { ['components']: _, ...safeProps } = Astro.props;
 
 const { entry } = Astro.locals.starlightRoute;
-const isSessionPage = entry.id.startsWith('codex/session/');
 
 const data = entry.data as any;
-const encounters = isSessionPage ? data?.encounters : null;
-const xp = isSessionPage ? data?.xp : null;
 
-const treasureItems = isSessionPage ? data?.treasureItems : null;
-const treasureTotal = isSessionPage ? data?.treasureTotal : null;
+let pageType = "default";
+
+if (entry.id.startsWith("codex/session/"))
+    pageType = "session";
+
+else if (entry.id.startsWith("codex/npc/"))
+    pageType = "npc";
+
 ---
-
 <Default {...safeProps}>
   <slot />
 </Default>
 
-{isSessionPage && encounters && xp && (
-  <section class="mt-8 border-t pt-6">
-    <h3 class="text-xl font-bold mb-4">Encounter Breakdown & Rewards</h3>
-    <XPTable 
-      encounters={encounters} 
-      xp={xp}
-      treasureItems={treasureItems || []} 
-      treasureTotal={treasureTotal || 0}  
-      client:load 
-    />
-  </section>
-)}
+{
+  pageType === "session" && (
+    <>
+      <NPCList npcs={data?.npcs} />
+      <XPTable
+        encounters={data?.encounters || null}
+        xp={data?.xp || null}
+        treasureItems={data?.treasureItems || []}
+        treasureTotal={data?.treasureTotal || 0}
+        client:load
+      />
+    </>
+  )
+}

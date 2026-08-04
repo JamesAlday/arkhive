@@ -23,6 +23,14 @@ const sessionFields = z.object({
 		end: z.number(),
 	}),
 
+	npcs: z.array(
+		z.object({
+			id: z.string().optional(),
+			name: z.string().optional(),
+			role: z.string().optional(),
+		})
+	).default([]),
+
 	treasureItems: z.array(
 		z.object({
 			item: z.string(),

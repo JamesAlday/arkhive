@@ -26,15 +26,14 @@ interface XPTableProps {
   treasureTotal: number;
 }
 
-
-
 export default function XPTable({ encounters, xp, treasureItems, treasureTotal }: XPTableProps) {
     if (!encounters || encounters.length === 0) {
         return <p className="text-gray-500 italic">No encounters recorded for this session.</p>;
     }
     
     return (
-        <>
+        <section className="xp-section">
+            <h3>Encounter Breakdown & Rewards</h3>
             <div className="ttrpg-table-wrapper">
                 <table className="ttrpg-table">
                     <thead>
@@ -99,6 +98,9 @@ export default function XPTable({ encounters, xp, treasureItems, treasureTotal }
             </div>
             )}
             <style>{`
+                .xp-section {
+                    margin-top: 2rem;
+                }
                 .ttrpg-table-wrapper {
                 overflow-x: auto;
                 margin: 1.5rem 0;
@@ -139,6 +141,6 @@ export default function XPTable({ encounters, xp, treasureItems, treasureTotal }
                 .font-mono { font-family: var(--sl-font-mono); }
                 .font-bold { font-weight: 700; }
             `}</style>
-        </>
+        </section>
     )
 }
