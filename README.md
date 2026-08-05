@@ -1,49 +1,99 @@
-# Starlight Starter Kit: Basics
+# Arkhive
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+> A static, searchable campaign codex and session tracker for tabletop RPGs, built with Astro and Starlight.
 
+Arkhive began as the documentation site for my D&D campaign **The Well**, but it has gradually evolved into a reusable framework that other Game Masters can use for their own worlds and campaigns.
+
+Unlike a traditional wiki, Arkhive treats your campaign as structured data. Session logs, NPCs, locations, factions, items, quests, and encounters are all stored as Markdown with frontmatter, allowing the site to automatically generate cross-links, statistics, dashboards, and reference pages.
+
+Because everything is static, the site is fast, version-controlled with Git, and can be hosted for free using GitHub Pages.
+
+## Features
+
+* 📖 Markdown-based campaign journal
+* 🗺️ World, location, and faction pages
+* 👥 NPC pages with automatic appearance tracking
+* 📊 Campaign dashboard with statistics and charts
+* 💰 Session XP and treasure tracking
+* 🔍 Full-text search
+* 🔗 Automatic cross-linking between campaign entities
+* 🌙 Built on Astro + Starlight
+* 🚀 Free hosting on GitHub Pages
+
+## Why?
+
+Most campaign management tools are either:
+
+* proprietary web applications,
+* difficult to customize,
+* or treat notes as unstructured text.
+
+Arkhive aims to be something different.
+
+By storing campaign information as structured frontmatter, the site can derive useful information automatically instead of requiring duplicate data entry.
+
+Examples include:
+
+* listing every session an NPC appeared in,
+* generating XP progression charts,
+* tracking treasure earned over time,
+* building timelines,
+* linking locations, quests, factions, and NPCs together automatically.
+
+The more information you record, the more useful the site becomes.
+
+## Technology
+
+* Astro
+* Starlight
+* TypeScript
+* React (for interactive components)
+* uPlot (campaign statistics and charts)
+* Markdown / MDX
+
+## Repository Structure
+
+```text
+src/
+├── components/
+├── content/
+│   ├── codex/
+│   │   ├── session/
+│   │   ├── npc/
+│   │   ├── location/
+│   │   ├── faction/
+│   │   └── ...
+├── lib/
+├── pages/
+└── styles/
 ```
-npm create astro@latest -- --template starlight
-```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Current Status
 
-## 🚀 Project Structure
+Arkhive is an active work in progress.
 
-Inside of your Astro + Starlight project, you'll see the following folders and files:
+Features are being developed alongside my campaign, so the project evolves as new needs arise. Expect the data model and components to continue growing as additional campaign systems are added.
 
-```
-.
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
-```
+## Using Arkhive
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+The easiest way to use Arkhive for your own campaign is to fork this repository and replace the campaign content inside the `src/content/` directory with your own.
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+Most of the functionality is driven by frontmatter, allowing dashboards, cross-links, and statistics to update automatically as your campaign grows.
 
-Static assets, like favicons, can be placed in the `public/` directory.
+## Roadmap
 
-## 🧞 Commands
+Planned or in-progress features include:
 
-All commands are run from the root of the project, from a terminal:
+* Session analytics
+* NPC relationship graphs
+* Quest tracking
+* Timeline generation
+* Location statistics
+* Encounter database
+* Treasure analytics
+* Additional dashboard widgets
+* Campaign templates and starter content
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## License
 
-## 👀 Want to learn more?
-
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+This project is open source. See the repository license for details.
