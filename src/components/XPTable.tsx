@@ -103,53 +103,7 @@ export default function XPTable({ encounters, xp, treasureItems, treasureTotal }
                 </table>
             </div>
             )}
-            <style>{`
-                .xp-section {
-                    margin-top: 2rem;
-                }
-                .empty-message {
-                    margin-left: 1.5rem;
-                }
-                .ttrpg-table-wrapper {
-                    overflow-x: auto;
-                    margin: 1.5rem 0;
-                    border: 1px solid var(--sl-color-gray-5);
-                    border-radius: 0.5rem;
-                }
-                .ttrpg-table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    font-size: var(--sl-text-sm);
-                }
-                .ttrpg-table th {
-                    background-color: var(--sl-color-gray-6);
-                    color: var(--sl-color-gray-2);
-                    font-weight: 700;
-                    padding: 0.75rem 1rem;
-                    text-transform: uppercase;
-                    font-size: var(--sl-text-xs);
-                    border-bottom: 2px solid var(--sl-color-gray-5);
-                }
-                .ttrpg-table td {
-                    padding: 0.75rem 1rem;
-                    color: var(--sl-color-white);
-                    border-bottom: 1px solid var(--sl-color-gray-5);
-                }
-                .ttrpg-table tbody tr:hover {
-                    background-color: var(--sl-color-gray-6);
-                }
-                .ttrpg-table tfoot td {
-                    font-weight: 600;
-                    background-color: var(--sl-color-gray-6);
-                    color: var(--sl-color-accent-high);
-                    border-top: 2px solid var(--sl-color-gray-5);
-                }
-                .text-center { text-align: center; }
-                .text-right { text-align: right; }
-                .text-left { text-align: left; }
-                .font-mono { font-family: var(--sl-font-mono); }
-                .font-bold { font-weight: 700; }
-            `}</style>
+
         </section>
     )
 }

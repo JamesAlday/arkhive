@@ -26,15 +26,12 @@ const ctaGhost =
           The Arkhive
         </h1>
         <p class="text-base leading-relaxed text-sf-muted sm:text-lg">
-            The Arkhive is the official codex and archive of the Well. It contains all the rules, references, and lore for the game, as well as a collection of user-submitted content.
+            The Arkhive is the official codex and archive of the Well. It contains all the rules, references, and lore for the game, as well as tracking player progress.
         </p>
         <div class="flex flex-wrap gap-3">
+          <a href={withBase('/dashboard')} class={ctaPrimary}>Dashboard</a>
           <a href={withBase('/codex')} class={ctaPrimary}>Explore the Codex</a>
           <a href={withBase('/settings')} class={ctaPrimary}>Settings</a>
-          <!-- 
-          <a href="/settings" class={ctaSecondary}>Settings</a>
-          <a href="/dashboard" class={ctaGhost}>Dashboard</a> 
-          -->
         </div>
       </div>
       <div class="grid flex-1 gap-3 sm:grid-cols-2 lg:max-w-md">

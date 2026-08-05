@@ -5,48 +5,36 @@ import AppNav from "../components/shell/AppNav.astro";
 import Panel from "../components/core/Panel.astro";
 import Text from "../components/core/Text.astro";
 import HudReadout from "../components/hud/HudReadout.astro";
-// import DashboardCharts from "../components/charts/DashboardCharts.tsx";
-import Dashboard from "../components/charts/DashboardCharts.tsx";
-// import Dashboard from "../components/charts/Dashboard.tsx";
-// import dashboardSnapshot from "../data/dashboard-snapshot.json";
 
-// import { getCollection } from "astro:content";
-// import { buildSessions } from "../lib/sessions";
+import SessionExperience from "../components/charts/SessionExperience.tsx";
+import RunningXPTable from "../components/charts/RunningXP.tsx";
+import RecentXP from "../components/charts/RecentXP.tsx";
+import SessionsPerLevel from "../components/charts/SessionsPerLevel.tsx";
 
-// const sessionsCollection = await getCollection("sessions");
+import { getSessionXPSeries, getRunningXP, getSessionsPerLevelSeries } from "../lib/sessions";
+import { getSessionPages } from '../lib/content';
 
-// const sessions = buildSessions(sessionsCollection)
-
-// const recent = sessions.ordered.slice(-3);
-
-// const data: uPlot.AlignedData = [
-//     recent.map(s => s.labels),
-//     recent.map(s => s.sessionXP),
-// ];
+const sessionPages = await getSessionPages();
+const sessionXP = getSessionXPSeries(sessionPages);
+const runningXP = getRunningXP(sessionPages);
+const sessionsPerLevel = getSessionsPerLevelSeries(sessionPages);
 ---
 
-<ScifiLayout title="Dashboard - Sessions & Experience">
+<ScifiLayout title="Dashboard">
   <AppShell>
     <AppNav />
     <header class="space-y-2">
       <Text variant="label" class="text-sf-primary">Telemetry</Text>
-      <Text variant="heading" glow class="max-w-2xl text-xl sm:text-2xl">Dashboard · sample charts</Text>
+      <Text variant="heading" glow class="max-w-2xl text-xl sm:text-2xl">Dashboard</Text>
       <p class="max-w-3xl text-sm text-sf-muted">
-        uPlot reads design tokens for strokes. Hourly temperature uses the same <strong class="text-sf-text">city presets</strong> as
-        the map page;
-        the chart <strong class="text-sf-text">fetches Open-Meteo in the browser</strong> (coordinates per preset) so
-        city changes always load the right series in static builds. The <strong class="text-sf-text">overview strip</strong> summarizes
-        high / low / mean temperature plus mean-sea-level pressure and humidity from the same response. The <strong class="text-sf-text"
-          >bar and spark</strong
-        > reuse that hourly payload (daily max per day, and a tail slice for the spark). If the request fails, the board falls back to the
-        committed snapshot (temperature-only snapshot + original TB/spark demo data).
+        Recent experience and session data for the campaign, including XP, encounters, and treasure.
       </p>
     </header>
 
     <Panel variant="primary" glow layer="raised" class="mt-6">
       <div class="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <Text variant="heading" as="h2" class="!text-base">Telemetry board</Text>
+          <Text variant="heading" as="h2" class="!text-base">Running Experience</Text>
           <Text variant="label" class="mt-1 text-sf-dim">Open-Meteo hourly + static ingest snapshot</Text>
         </div>
         <div class="pointer-events-none hidden text-right sm:block">
@@ -56,9 +44,16 @@ import Dashboard from "../components/charts/DashboardCharts.tsx";
           </HudReadout>
         </div>
       </div>
-      <!-- <DashboardCharts client:visible snapshot={dashboardSnapshot} initialCityId="berlin" /> -->
-      <Dashboard client:load />
-      <!-- <DashboardChart />   -->
+      <div>
+        <RunningXPTable xp={runningXP} client:load />
+      </div>
+      <div>
+        <div><RecentXP xp={sessionXP} client:load /></div>
+      </div>
+      <div style="display: flex; gap: 20px;">
+        <div><SessionExperience xp={sessionXP} client:load /></div>
+        <SessionsPerLevel xp={sessionsPerLevel} client:load />
+      </div>
     </Panel>
   </AppShell>
 </ScifiLayout>

@@ -65,6 +65,9 @@ export default defineConfig({
 					items: [{ autogenerate: { directory: 'codex/reference' } }],
 				}
 			],
+			customCss: [
+				'./src/styles/codex.css'
+			],
 		}),
 	],
 
