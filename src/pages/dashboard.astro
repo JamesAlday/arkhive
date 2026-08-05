@@ -11,12 +11,13 @@ import RunningXPTable from "../components/charts/RunningXP.tsx";
 import RecentXP from "../components/charts/RecentXP.tsx";
 import SessionsPerLevel from "../components/charts/SessionsPerLevel.tsx";
 
-import { getSessionXPSeries, getRunningXP, getSessionsPerLevelSeries } from "../lib/sessions";
+import { getSessionXPSeries, getRunningXP, getSessionsPerLevelSeries, getRecentXPSeries } from "../lib/sessions";
 import { getSessionPages } from '../lib/content';
 
 const sessionPages = await getSessionPages();
 const sessionXP = getSessionXPSeries(sessionPages);
 const runningXP = getRunningXP(sessionPages);
+const recentXP = getRecentXPSeries(runningXP);
 const sessionsPerLevel = getSessionsPerLevelSeries(sessionPages);
 ---
 
@@ -48,7 +49,7 @@ const sessionsPerLevel = getSessionsPerLevelSeries(sessionPages);
         <RunningXPTable xp={runningXP} client:load />
       </div>
       <div>
-        <div><RecentXP xp={sessionXP} client:load /></div>
+        <div><RecentXP xp={recentXP} client:load /></div>
       </div>
       <div style="display: flex; gap: 20px;">
         <div><SessionExperience xp={sessionXP} client:load /></div>

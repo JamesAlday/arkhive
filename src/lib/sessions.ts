@@ -30,6 +30,23 @@ export function getRunningXP(sessions: any) {
     return runningXP;
 }
 
+export function getRecentXPSeries(runningXP: any) {
+    const sessionNum = [];
+    const runningTotal = [];
+
+    const sessions = runningXP.slice(-3);
+
+    for (const session of sessions) {
+        sessionNum.push(session.session);
+        runningTotal.push(session.runningTotal);
+    }
+
+    return [
+        sessionNum,
+        runningTotal
+    ]
+}
+
 function getSessionsPerLevel(sessions: any) {
     const sessionsPerLevel: Record<number, number> = {};
 
