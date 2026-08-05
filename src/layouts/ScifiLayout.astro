@@ -78,6 +78,15 @@ const ogImage = new URL(withBase('/well_floor_circles.webp'), Astro.url.origin);
       })();
     </script>
   </head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-B1MY2HGE0P"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-B1MY2HGE0P');
+  </script>
   <body class="min-h-dvh bg-sf-bg font-sf-mono text-sf-text antialiased">
     <slot />
   </body>
