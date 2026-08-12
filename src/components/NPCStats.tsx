@@ -1,8 +1,8 @@
 import React from "react";
-import { getCollection } from 'astro:content';
+import { getSessionPages } from "../lib/content";
 
 let npcs: any[] = [];
-const sessionPages = (await getCollection('docs')).filter(page => page.id.startsWith('codex/session/'));
+const sessionPages = await getSessionPages();
 
 export default function NPCStats({ id, data }: any) {
     const npcId = id.replace(/codex\/npc\//g, '');

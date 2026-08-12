@@ -2,9 +2,9 @@ import React from "react";
 import { getCollection } from 'astro:content';
 
 interface NPC {
-    id: string;
-    name: string;
-    role: string;
+    id?: string;
+    name?: string;
+    role?: string;
 }
 
 interface NPCListProps {

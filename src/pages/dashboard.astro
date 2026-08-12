@@ -11,13 +11,20 @@ import RunningXPTable from "../components/charts/RunningXP.tsx";
 import RecentXP from "../components/charts/RecentXP.tsx";
 import SessionsPerLevel from "../components/charts/SessionsPerLevel.tsx";
 
-import { getSessionXPSeries, getRunningXP, getSessionsPerLevelSeries, getRecentXPSeries } from "../lib/sessions";
+import { 
+  getSessionXPSeries, 
+  getRunningXP, 
+  getSessionsPerLevelSeries, 
+  getRecentXPSeries, 
+  getCurrentLevel
+} from "../lib/sessions";
 import { getSessionPages } from '../lib/content';
 
 const sessionPages = await getSessionPages();
 const sessionXP = getSessionXPSeries(sessionPages);
 const runningXP = getRunningXP(sessionPages);
 const recentXP = getRecentXPSeries(runningXP);
+const currentLevel: string = getCurrentLevel(runningXP);
 const sessionsPerLevel = getSessionsPerLevelSeries(sessionPages);
 ---
 
@@ -33,24 +40,29 @@ const sessionsPerLevel = getSessionsPerLevelSeries(sessionPages);
     </header>
 
     <Panel variant="primary" glow layer="raised" class="mt-6">
+      <!-- Running Experience -->
       <div class="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
           <Text variant="heading" as="h2" class="!text-base">Running Experience</Text>
-          <Text variant="label" class="mt-1 text-sf-dim">Open-Meteo hourly + static ingest snapshot</Text>
+          <Text variant="label" class="mt-1 text-sf-dim">Per-Session Experience + Player Running Total</Text>
         </div>
+        <!-- Panel HUD -->
         <div class="pointer-events-none hidden text-right sm:block">
           <HudReadout align="right">
-            <span slot="label">Link</span>
-            nominal
+            <span slot="label">Level</span>
+            { currentLevel }
           </HudReadout>
         </div>
       </div>
+      <!-- Running XP Table --> 
       <div>
         <RunningXPTable xp={runningXP} client:load />
       </div>
+      <!-- Recent XP Chart -->
       <div>
         <div><RecentXP xp={recentXP} client:load /></div>
       </div>
+      <!-- Session XP & Sessions Per Level Charts -->
       <div style="display: flex; gap: 20px;">
         <div><SessionExperience xp={sessionXP} client:load /></div>
         <SessionsPerLevel xp={sessionsPerLevel} client:load />

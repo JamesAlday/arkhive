@@ -7,6 +7,8 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import { starlightBasePath } from 'starlight-base-path';
 
+import { sidebar } from './src/sidebar.ts';
+
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://jamesalday.github.io',
@@ -16,6 +18,7 @@ export default defineConfig({
 		react(),
 		starlight({
 			title: 'The Arkhive',
+			favicon: '/public/helical.svg',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/jamesalday/arkhive' }],
 			plugins: [
 				starlightBasePath(),
@@ -45,44 +48,7 @@ export default defineConfig({
 					`,
 				}
 			],
-			sidebar: [
-				{
-					label: 'Sessions',
-					items: [{ autogenerate: { directory: 'codex/session' } }],
-				},
-				{
-					label: 'Characters',
-					items: [{ autogenerate: { directory: 'codex/character' } }],
-				},
-				{
-					label: 'NPCs',
-					items: [{ autogenerate: { directory: 'codex/npc' } }],
-				},
-				{
-					label: 'Regions',
-					items: [{ autogenerate: { directory: 'codex/region' } }],
-				},
-				{
-					label: 'Locations',
-					items: [{ autogenerate: { directory: 'codex/location' } }],
-				},
-				{
-					label: 'Lore',
-					items: [{ autogenerate: { directory: 'codex/lore' } }],
-				},
-				{
-					label: 'Groups',
-					items: [{ autogenerate: { directory: 'codex/group' } }],
-				},
-				{
-					label: 'Rules',
-					items: [{ autogenerate: { directory: 'codex/rule' } }],
-				},
-				{
-					label: 'Reference',
-					items: [{ autogenerate: { directory: 'codex/reference' } }],
-				}
-			],
+			sidebar,
 			customCss: [
 				'./src/styles/codex.css'
 			],
@@ -90,13 +56,13 @@ export default defineConfig({
 	],
 
 	vite: {
-    plugins: [tailwindcss()],
-    /** TensorFlow.js pulls many submodules; avoid SSR touching them and help Vite chunk resolution. */
-    ssr: {
-      external: ["@tensorflow/tfjs", "@tensorflow-models/coco-ssd"],
-    },
-    optimizeDeps: {
-      include: ["@tensorflow/tfjs", "@tensorflow-models/coco-ssd"],
-    },
-  },
+    	plugins: [tailwindcss()],
+    	/** TensorFlow.js pulls many submodules; avoid SSR touching them and help Vite chunk resolution. */
+    	ssr: {
+      		external: ["@tensorflow/tfjs", "@tensorflow-models/coco-ssd"],
+    	},
+    	optimizeDeps: {
+      		include: ["@tensorflow/tfjs", "@tensorflow-models/coco-ssd"],
+    	},
+  	},
 });

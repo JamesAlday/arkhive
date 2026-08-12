@@ -1,38 +1,64 @@
 import type uPlot from "uplot";
+import type { DocsEntry } from "./content";
 
-export function getSessionXPSeries(sessions: any, count = 3): uPlot.AlignedData {
-    const sessionNumbers = sessions.map((s: any) => s.data.session);
-    const xpValues = sessions.map((s: any) => s.data.xp.each);
-    
+interface RunningXPRow {
+    session: number;
+    xpEach: number;
+    sessionTotal: number;
+    runningTotal: number;
+    level: number;
+    title: string;
+}
+
+/**
+ * Session Experience dashboard chart
+ * @param sessions sessionPages
+ * @param count number of sessions
+ * @returns [session numbers, xp values]
+ */
+export function getSessionXPSeries(sessions: DocsEntry[], count = 3): uPlot.AlignedData {
+    const sessionNumbers = sessions.map(s => s.data.session!);
+    const xpValues = sessions.map(s => s.data.xp!.each);
+
     return [
-        [...sessionNumbers],
-        [...xpValues]
+        sessionNumbers,
+        xpValues
     ];
 }
 
-export function getRunningXP(sessions: any) {
-    const runningXP = [];
+/**
+ * Running Experience Table & Recent Experience Chart
+ * @param sessions sessionPages
+ * @returns runningXP[]
+ */
+export function getRunningXP(sessions: DocsEntry[]): RunningXPRow[] {
+    const runningXP: RunningXPRow[] = [];
     let runningTotal = 0;
 
     for (const session of sessions) {
-        runningTotal = runningTotal + session.data.xp.each;
+        runningTotal = runningTotal + session.data.xp!.each;
 
         let row = {
-            session: session.data.session,
-            xpEach: session.data.xp.each,
-            sessionTotal: session.data.xp.total,
+            session: session.data.session!,
+            xpEach: session.data.xp!.each,
+            sessionTotal: session.data.xp!.total,
             runningTotal: runningTotal,
-            level: session.data.level.start,
-            title: session.data.title
+            level: session.data.level!.end,
+            title: session.data.title!
         }
         runningXP.push(row);
     }
     return runningXP;
 }
 
-export function getRecentXPSeries(runningXP: any) {
-    const sessionNum = [];
-    const runningTotal = [];
+/**
+ * 
+ * @param runningXP getRunningXP output
+ * @returns [[session numbers], [running totals]]
+ */
+export function getRecentXPSeries(runningXP: RunningXPRow[]): uPlot.AlignedData {
+    const sessionNum: number[] = [];
+    const runningTotal: number[] = [];
 
     const sessions = runningXP.slice(-3);
 
@@ -47,11 +73,16 @@ export function getRecentXPSeries(runningXP: any) {
     ]
 }
 
-function getSessionsPerLevel(sessions: any) {
+/**
+ * 
+ * @param sessions 
+ * @returns 
+ */
+function getSessionsPerLevel(sessions: DocsEntry[]): Record<number, number> {
     const sessionsPerLevel: Record<number, number> = {};
 
     for (const session of sessions) {
-        const level = session.data.level.start;
+        const level = session.data.level!.start;
         if (!sessionsPerLevel[level]) {
             sessionsPerLevel[level] = 0;
         }
@@ -61,11 +92,16 @@ function getSessionsPerLevel(sessions: any) {
     return sessionsPerLevel;
 }
 
-export function getSessionsPerLevelSeries(sessionData: any): uPlot.AlignedData {
+/**
+ * 
+ * @param sessionData 
+ * @returns 
+ */
+export function getSessionsPerLevelSeries(sessionData: DocsEntry[]): uPlot.AlignedData {
     const sessionsPerLevel = getSessionsPerLevel(sessionData);
-    
-    const levels: any[] = [];
-    const sessions: any[] = [];
+
+    const levels: number[] = [];
+    const sessions: (number | null)[] = [];
 
     Object.entries(sessionsPerLevel).forEach(([level, count]) => {
         levels.push(parseInt(level));
@@ -76,4 +112,43 @@ export function getSessionsPerLevelSeries(sessionData: any): uPlot.AlignedData {
         levels,
         sessions
     ];
+}
+
+/**
+ * Convert number to string for display of current level
+ * @param num Number from 1-20
+ * @returns num converted to string
+ */
+function convert1To20(num: number): string {
+  const words = [
+    "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", 
+    "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", 
+    "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"
+  ];
+
+  return words[num] || 'Unknown';
+}
+
+/**
+ * 
+ * @param runningXP 
+ */
+export function getCurrentLevel(runningXP: RunningXPRow[]): string {
+    const latestSession = runningXP.at(-1);
+    return latestSession ? convert1To20(latestSession.level) : 'Unknown';
+}
+
+export function getTreasureItems(sessions: DocsEntry[]) {
+    return sessions.flatMap(s => {
+        if (s.data.treasureItems)
+            return s.data.treasureItems!
+        return [];
+    });
+}
+
+export function getTreasureTotals(sessions: DocsEntry[]) {
+    const total = sessions
+        .map(session => session.data.treasureTotal ?? 0)
+        .reduce((acc, curr) => acc + curr, 0);
+    return total;
 }

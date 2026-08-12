@@ -36,6 +36,7 @@ const sessionFields = z.object({
 		z.object({
 			item: z.string(),
 			value: z.number(),
+			rarity: z.string().optional(),
 		})
 	),
 

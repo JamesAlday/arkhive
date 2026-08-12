@@ -1,10 +1,13 @@
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 
-export async function getDocs() {
-    return (await getCollection('docs'))
+export type DocsEntry = CollectionEntry<'docs'>;
+
+export async function getDocs(
+    filter?: (entry: DocsEntry) => boolean
+): Promise<DocsEntry[]> {
+    return await getCollection('docs', filter);
 }
 
-export async function getSessionPages() {
-    return (await getDocs())
-    .filter(page => page.id.startsWith('codex/session/'));
+export async function getSessionPages(): Promise<DocsEntry[]> {
+    return await getDocs(page => page.id.startsWith('codex/session/'));
 }

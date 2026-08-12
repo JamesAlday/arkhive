@@ -4,7 +4,7 @@ interface Encounter {
     encounter: string;
     cr: number | null;
     quantity: number;
-    xpEach: number;
+    xpEach?: number;
     xpTotal: number;
 }
 
@@ -17,6 +17,7 @@ interface XP {
 interface TreasureItem {
     item: string;
     value: number;
+    rarity?: string;
 }
 
 interface XPTableProps {
@@ -91,7 +92,7 @@ export default function XPTable({ encounters, xp, treasureItems, treasureTotal }
                     <tbody className="">
                         {treasureItems.map((item, index) => (
                             <tr key={index} className="">
-                                <td className="text-left">{item.item}</td>
+                                <td className="text-left">{item.item} {item.rarity ? `(${item.rarity})` : ''}</td>
                                 <td className="text-right">{item.value}</td>
                             </tr>
                         ))}
@@ -100,6 +101,17 @@ export default function XPTable({ encounters, xp, treasureItems, treasureTotal }
                             <td colSpan={2} className="text-right"><strong>Total: </strong>{treasureTotal}</td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colSpan={2} className="text-right">
+                                <small>
+                                    <a target="_blank" href="https://docs.google.com/spreadsheets/d/1OG7UsbsjNFX4zVkDORiem1ySUGYrhu-wrTRnGEk4jgc/edit?usp=sharing">
+                                        Prices sourced from D&D Magical Item Prices
+                                    </a>
+                                </small>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
             )}

@@ -1,6 +1,8 @@
 ---
 import type { Props } from '@astrojs/starlight/props';
 import Default from '@astrojs/starlight/components/MarkdownContent.astro';
+
+import type { DocsEntry } from '../lib/content';
 import XPTable from './XPTable';
 import NPCList from './NPCList';
 import NPCStats from './NPCStats';
@@ -9,7 +11,7 @@ const { ['components']: _, ...safeProps } = Astro.props;
 
 const { entry } = Astro.locals.starlightRoute;
 
-const data = entry.data as any;
+const data = entry.data as DocsEntry['data'];
 
 let pageType = "default";
 
@@ -34,10 +36,10 @@ else if (entry.id.startsWith("codex/npc/"))
 {
   pageType === "session" && (
     <>
-      <NPCList npcs={data?.npcs} />
+      <NPCList npcs={data?.npcs || []} />
       <XPTable
-        encounters={data?.encounters || null}
-        xp={data?.xp || null}
+        encounters={data?.encounters || []}
+        xp={data?.xp || { total: 0, each: 0, players: 0 }}
         treasureItems={data?.treasureItems || []}
         treasureTotal={data?.treasureTotal || 0}
         client:load
