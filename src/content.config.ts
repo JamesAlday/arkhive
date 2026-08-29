@@ -4,6 +4,9 @@ import { docsSchema } from '@astrojs/starlight/schema';
 import { starlightTagsExtension } from 'starlight-tags/schema';
 import { z } from 'astro/zod';
 
+// DMG rarities, plus "Unknown" for items confirmed magic but not yet identified
+const itemRarities = z.enum(['Common', 'Uncommon', 'Rare', 'Very Rare', 'Legendary', 'Unknown']);
+
 // Frontmatter schema for session pages
 const sessionFields = z.object({
 	title: z.string(),
@@ -36,7 +39,7 @@ const sessionFields = z.object({
 		z.object({
 			item: z.string(),
 			value: z.number(),
-			rarity: z.string().optional(),
+			rarity: itemRarities.optional(),
 		})
 	),
 

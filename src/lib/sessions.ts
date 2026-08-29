@@ -133,9 +133,14 @@ function convert1To20(num: number): string {
  * 
  * @param runningXP 
  */
-export function getCurrentLevel(runningXP: RunningXPRow[]): string {
+export function getCurrentLevel(runningXP: RunningXPRow[], asString: boolean = true): string | number {
     const latestSession = runningXP.at(-1);
-    return latestSession ? convert1To20(latestSession.level) : 'Unknown';
+    if (latestSession) {
+        if (asString) return convert1To20(latestSession.level);
+        else return latestSession.level;
+    }
+
+    return "Unknown";
 }
 
 export function getTreasureItems(sessions: DocsEntry[]) {
@@ -151,4 +156,83 @@ export function getTreasureTotals(sessions: DocsEntry[]) {
         .map(session => session.data.treasureTotal ?? 0)
         .reduce((acc, curr) => acc + curr, 0);
     return total;
+}
+
+/**
+ * Magic Items
+ */
+
+export interface MagicItemTierCounts {
+    tier: number;
+    common: number;
+    uncommon: number;
+    rare: number;
+    very_rare: number;
+    legendary: number;
+    unknown: number;
+    all: number;
+}
+
+type Rarity = keyof Omit<MagicItemTierCounts, 'tier' | 'all'>;
+
+export const rarities: Rarity[] = [
+    'common',
+    'uncommon',
+    'rare',
+    'very_rare',
+    'legendary',
+    'unknown'
+];
+
+// Mirrors the tier/level bands from the DMG magic item tables (see magicItemsPerLevel).
+const TIER_LEVEL_RANGES = [
+    { tier: 1, min: 1, max: 4 },
+    { tier: 2, min: 5, max: 10 },
+    { tier: 3, min: 11, max: 16 },
+    { tier: 4, min: 17, max: 20 },
+];
+
+// Convert character level to tier level
+function getTierForLevel(level: number): number {
+    const range = TIER_LEVEL_RANGES.find(r => level >= r.min && level <= r.max);
+    return range ? range.tier : TIER_LEVEL_RANGES[TIER_LEVEL_RANGES.length - 1].tier;
+}
+
+function normalizeRarity(rarity?: string): Rarity | null {
+    if (!rarity) return null;
+    const key = rarity.trim().toLowerCase().replace(/\s+/g, '_');
+    if (key === 'common' || key === 'uncommon' || key === 'rare' || key === 'very_rare' || key === 'legendary' || key === 'unknown') {
+        return key;
+    }
+    return null;
+}
+
+/**
+ * Counts magic items actually awarded to the party, bucketed by DMG tier and rarity,
+ * so they can be compared against magicItemsPerLevel. Tier is derived from the party's
+ * level at the start of the session the treasure was received in.
+ * @param sessions sessionPages
+ * @returns one row per tier (1-4), each with counts by rarity plus an "all" total
+ */
+export function getMagicItemsByTier(sessions: DocsEntry[]): MagicItemTierCounts[] {
+    const counts: Record<number, MagicItemTierCounts> = {};
+    for (const { tier } of TIER_LEVEL_RANGES) {
+        counts[tier] = { tier, common: 0, uncommon: 0, rare: 0, very_rare: 0, legendary: 0, unknown: 0, all: 0 };
+    }
+
+    for (const session of sessions) {
+        const level = session.data.level?.start;
+        const items = session.data.treasureItems;
+        if (level == null || !items) continue;
+
+        const tier = getTierForLevel(level);
+        for (const item of items) {
+            const rarityKey = normalizeRarity(item.rarity);
+            if (!rarityKey) continue;
+            counts[tier][rarityKey]++;
+            counts[tier].all++;
+        }
+    }
+
+    return Object.values(counts);
 }

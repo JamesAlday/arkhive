@@ -1,0 +1,48 @@
+---
+import ScifiLayout from "../layouts/ScifiLayout.astro";
+import AppShell from "../components/shell/AppShell.astro";
+import AppNav from "../components/shell/AppNav.astro";
+import Panel from "../components/core/Panel.astro";
+import Text from "../components/core/Text.astro";
+import HudReadout from "../components/hud/HudReadout.astro";
+
+import {
+  getRunningXP,
+  getCurrentLevel,
+  getTreasureItems,
+  getMagicItemsByTier
+} from "../lib/sessions";
+import { getSessionPages } from '../lib/content';
+
+import MagicItemsTable from '../components/MagicItemsTable';
+
+const sessionPages = await getSessionPages();
+const runningXP = getRunningXP(sessionPages);
+const currentLevel = getCurrentLevel(runningXP, false);
+const treasureItems = getTreasureItems(sessionPages);
+const partyItemsPerTier = getMagicItemsByTier(sessionPages);
+---
+
+<ScifiLayout title="DM Dashboard">
+  <AppShell>
+    <AppNav />
+    <header class="space-y-2">
+      <Text variant="label" class="text-sf-primary">Telemetry</Text>
+      <Text variant="heading" glow class="max-w-2xl text-xl sm:text-2xl">DM Dashboard</Text>
+      <p class="max-w-3xl text-sm text-sf-muted">
+        Data and stats relevant to running the campaign. If you are not the DM, go away.
+      </p>
+    </header>
+
+    <Panel variant="primary" glow layer="raised" class="mt-6">
+      <!-- Running Experience -->
+      <div class="mb-6 flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <Text variant="heading" as="h2" class="!text-base">Magic Items</Text>
+          <Text variant="label" class="mt-1 text-sf-dim">Expected Items By Tier vs Party Items</Text>
+        </div>
+      </div>
+      <MagicItemsTable currentLevel={Number(currentLevel)} treasureItems={treasureItems} partyItemsPerTier={partyItemsPerTier}></MagicItemsTable>
+    </Panel>
+  </AppShell>   
+</ScifiLayout>

@@ -24,7 +24,7 @@ const sessionPages = await getSessionPages();
 const sessionXP = getSessionXPSeries(sessionPages);
 const runningXP = getRunningXP(sessionPages);
 const recentXP = getRecentXPSeries(runningXP);
-const currentLevel: string = getCurrentLevel(runningXP);
+const currentLevel = getCurrentLevel(runningXP);
 const sessionsPerLevel = getSessionsPerLevelSeries(sessionPages);
 ---
 

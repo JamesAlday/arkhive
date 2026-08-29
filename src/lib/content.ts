@@ -9,5 +9,12 @@ export async function getDocs(
 }
 
 export async function getSessionPages(): Promise<DocsEntry[]> {
-    return await getDocs(page => page.id.startsWith('codex/session/'));
+    const pages = await getDocs(page => page.id.startsWith('codex/session/'));
+
+    // Sort pages by session # (defaults to lexicographical sort)
+    return pages.sort((a, b) => {
+        const sessionA = a.data.session ?? 0;
+        const sessionB = b.data.session ?? 0;
+        return sessionA - sessionB;
+    });
 }
