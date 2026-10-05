@@ -1,10 +1,14 @@
-import React from "react";
+import type { NPC } from "../content.config";
 import { getSessionPages } from "../lib/content";
 
-let npcs: any[] = [];
 const sessionPages = await getSessionPages();
 
-export default function NPCStats({ id, data }: any) {
+type NPCStatsProps = {
+    id: string;
+    data: NPC;
+};
+
+export default function NPCStats({ id, data }: NPCStatsProps) {
     const npcId = id.replace(/codex\/npc\//g, '');
     const appearances = sessionPages
         .filter(session => 
@@ -18,9 +22,12 @@ export default function NPCStats({ id, data }: any) {
     return (
         <section>
             <h3>Details</h3>
-            <p>Faction: {data?.faction || "Unknown"}</p>
-            <p>Occupation: {data?.occupation || "None Listed"}</p>
-            <p>Status: {data?.status || "Unknown"}</p>
+            <p>Aliases: {data.aliases?.join(", ") || "Not listed"}</p>
+            <p>Species: {data.species || "Not listed"}</p>
+            <p>Gender: {data.gender || "Not listed"}</p>
+            <p>Faction: {data.faction || "Not listed"}</p>
+            <p>Occupation: {data.occupation || "Not listed"}</p>
+            <p>Status: {data.status || "Not listed"}</p>
             <p>First Appearance: {firstAppearance?.data.session || "Not listed"}</p>
             <p>Latest Appearance: {latestAppearance?.data.session || "Not listed"}</p>
             <p>Appears in: {sessionNumbers.join(", ") || "Not listed"}</p>
