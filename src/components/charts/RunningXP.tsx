@@ -19,7 +19,11 @@ export default function RunningXPTable({ xp }: any) {
                         <td className="text-right">{row.xpEach?.toLocaleString()}</td>
                         <td className="text-right">{row.runningTotal?.toLocaleString()}</td>
                         <td className="text-center">{row.level}</td>
-                        <td className="text-left">{row.title}</td>
+                        <td className="text-left">
+                            <a href={`/arkhive/${row.id}`} className="text-blue-500 hover:underline">
+                                {row.title}
+                            </a>
+                        </td>
                     </tr>
                 ))}
                 {/* Total Row */}

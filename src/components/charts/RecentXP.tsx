@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import uPlot from "uplot";
 import "uplot/dist/uPlot.min.css";
+import { xp_table } from "../../data/xp_table";
 
 const { bars } = uPlot.paths;
 
@@ -8,9 +9,7 @@ interface SessionExperienceProps {
   xp?: uPlot.AlignedData;
 }
 
-const xp_table = [0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000]
-
-export default function RecentXP({ xp }: any) {
+export default function RecentXP({ xp }: SessionExperienceProps) {
     const chartRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

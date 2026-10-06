@@ -1,5 +1,6 @@
 import type uPlot from "uplot";
 import type { DocsEntry } from "./content";
+import { xp_table } from "../data/xp_table";
 
 interface RunningXPRow {
     session: number;
@@ -39,6 +40,7 @@ export function getRunningXP(sessions: DocsEntry[]): RunningXPRow[] {
         runningTotal = runningTotal + session.data.xp!.each;
 
         let row = {
+            id: session.id,
             session: session.data.session!,
             xpEach: session.data.xp!.each,
             sessionTotal: session.data.xp!.total,
@@ -141,6 +143,22 @@ export function getCurrentLevel(runningXP: RunningXPRow[], asString: boolean = t
     }
 
     return "Unknown";
+}
+
+export function toNextLevel(runningXP: RunningXPRow[]): number | null {
+    const latestSession = runningXP.at(-1);
+    if (latestSession) {
+        const currentLevel = latestSession.level;
+        const currentTotal = latestSession.runningTotal;
+
+        // XP required for next level based on DMG table
+        const nextLevelXP = xp_table[currentLevel];
+        if (nextLevelXP !== undefined) {
+            return nextLevelXP - currentTotal;
+        }
+    }
+
+    return null; // If no sessions or level not found
 }
 
 export function getTreasureItems(sessions: DocsEntry[]) {

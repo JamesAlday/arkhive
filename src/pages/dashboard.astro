@@ -16,7 +16,8 @@ import {
   getRunningXP, 
   getSessionsPerLevelSeries, 
   getRecentXPSeries, 
-  getCurrentLevel
+  getCurrentLevel,
+  toNextLevel
 } from "../lib/sessions";
 import { getSessionPages } from '../lib/content';
 
@@ -25,6 +26,7 @@ const sessionXP = getSessionXPSeries(sessionPages);
 const runningXP = getRunningXP(sessionPages);
 const recentXP = getRecentXPSeries(runningXP);
 const currentLevel = getCurrentLevel(runningXP);
+const nextLevel = toNextLevel(runningXP);
 const sessionsPerLevel = getSessionsPerLevelSeries(sessionPages);
 ---
 
@@ -51,6 +53,10 @@ const sessionsPerLevel = getSessionsPerLevelSeries(sessionPages);
           <HudReadout align="right">
             <span slot="label">Level</span>
             { currentLevel }
+          </HudReadout>
+          <HudReadout align="right">
+            <span slot="label">XP To Next Level</span>
+            { nextLevel }
           </HudReadout>
         </div>
       </div>
