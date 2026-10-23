@@ -75,6 +75,16 @@ export function getRecentXPSeries(runningXP: RunningXPRow[]): uPlot.AlignedData 
     ]
 }
 
+export function getRunningXPSeries(runningXP: RunningXPRow[]): uPlot.AlignedData {
+    const sessionNumbers = runningXP.map(session => session.session);
+    const runningTotals = runningXP.map(session => session.runningTotal);
+
+    return [
+        sessionNumbers,
+        runningTotals
+    ];
+}
+
 /**
  * 
  * @param sessions 

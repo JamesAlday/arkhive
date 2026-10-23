@@ -18,8 +18,8 @@ export default function RecentXP({ xp }: SessionExperienceProps) {
     const opts: uPlot.Options = {
         title: "Recent Experience",
 
-        width: 1200,
-        height: 600,
+        width: 600,
+        height: 300,
 
         scales: {
             x: { 

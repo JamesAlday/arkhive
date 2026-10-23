@@ -7,6 +7,7 @@ import Text from "../components/core/Text.astro";
 import HudReadout from "../components/hud/HudReadout.astro";
 
 import SessionExperience from "../components/charts/SessionExperience.tsx";
+import RunningExperience from "../components/charts/RunningExperience.tsx";
 import RunningXPTable from "../components/charts/RunningXP.tsx";
 import RecentXP from "../components/charts/RecentXP.tsx";
 import SessionsPerLevel from "../components/charts/SessionsPerLevel.tsx";
@@ -14,6 +15,7 @@ import SessionsPerLevel from "../components/charts/SessionsPerLevel.tsx";
 import { 
   getSessionXPSeries, 
   getRunningXP, 
+  getRunningXPSeries,
   getSessionsPerLevelSeries, 
   getRecentXPSeries, 
   getCurrentLevel,
@@ -24,6 +26,7 @@ import { getSessionPages } from '../lib/content';
 const sessionPages = await getSessionPages();
 const sessionXP = getSessionXPSeries(sessionPages);
 const runningXP = getRunningXP(sessionPages);
+const runningXPSeries = getRunningXPSeries(runningXP);
 const recentXP = getRecentXPSeries(runningXP);
 const currentLevel = getCurrentLevel(runningXP);
 const nextLevel = toNextLevel(runningXP);
@@ -64,13 +67,10 @@ const sessionsPerLevel = getSessionsPerLevelSeries(sessionPages);
       <div>
         <RunningXPTable xp={runningXP} client:load />
       </div>
-      <!-- Recent XP Chart -->
-      <div>
-        <div><RecentXP xp={recentXP} client:load /></div>
-      </div>
-      <!-- Session XP & Sessions Per Level Charts -->
-      <div style="display: flex; gap: 20px;">
-        <div><SessionExperience xp={sessionXP} client:load /></div>
+      <div class="mt-2 grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <RecentXP xp={recentXP} client:load />
+        <RunningExperience xp={runningXPSeries} client:load />
+        <SessionExperience xp={sessionXP} client:load />
         <SessionsPerLevel xp={sessionsPerLevel} client:load />
       </div>
     </Panel>
