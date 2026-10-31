@@ -3,7 +3,7 @@ title: Deeper in the Slum Maze
 description: The party finds Thatcher Cobb and chases the hound deeper below the Well.
 
 session: 18
-date: 10-30-2026
+date: 10-29-2026
 
 xp:
   total: 2600

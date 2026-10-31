@@ -1,0 +1,140 @@
+---
+import ScifiLayout from "../layouts/ScifiLayout.astro";
+import AppShell from "../components/shell/AppShell.astro";
+import AppNav from "../components/shell/AppNav.astro";
+import Panel from "../components/core/Panel.astro";
+import Text from "../components/core/Text.astro";
+import { getSessionPages } from "../lib/content";
+
+const BASE_URL = import.meta.env.BASE_URL;
+const sessionPages = await getSessionPages();
+const datedSessions = sessionPages
+  .filter((entry) => entry.data.date instanceof Date && typeof entry.data.session === "number")
+  .map((entry) => ({
+    session: entry.data.session!,
+    date: entry.data.date!,
+    href: `${BASE_URL}/${entry.id}`,
+  }))
+  .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+const undatedCount = sessionPages.length - datedSessions.length;
+const sessionsByDate = new Map<string, typeof datedSessions>();
+
+for (const session of datedSessions) {
+  const dateKey = session.date.toISOString().slice(0, 10);
+  const sessionsOnDate = sessionsByDate.get(dateKey) ?? [];
+  sessionsOnDate.push(session);
+  sessionsByDate.set(dateKey, sessionsOnDate);
+}
+
+const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const months: {
+  key: string;
+  label: string;
+  days: ({ number: number; sessions: typeof datedSessions } | null)[];
+  sessionCount: number;
+}[] = [];
+
+if (datedSessions.length > 0) {
+  const firstDate = datedSessions[0].date;
+  const lastDate = datedSessions[datedSessions.length - 1].date;
+  const firstMonth = firstDate.getUTCFullYear() * 12 + firstDate.getUTCMonth();
+  const lastMonth = lastDate.getUTCFullYear() * 12 + lastDate.getUTCMonth();
+
+  for (let monthIndex = firstMonth; monthIndex <= lastMonth; monthIndex++) {
+    const year = Math.floor(monthIndex / 12);
+    const month = monthIndex % 12;
+    const firstWeekday = new Date(Date.UTC(year, month, 1)).getUTCDay();
+    const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    const cellCount = Math.ceil((firstWeekday + daysInMonth) / 7) * 7;
+    const key = `${year}-${String(month + 1).padStart(2, "0")}`;
+    const label = new Intl.DateTimeFormat("en-US", {
+      month: "long",
+      year: "numeric",
+      timeZone: "UTC",
+    }).format(new Date(Date.UTC(year, month, 1)));
+    const days = Array.from({ length: cellCount }, (_, index) => {
+      const dayNumber = index - firstWeekday + 1;
+
+      if (dayNumber < 1 || dayNumber > daysInMonth) return null;
+
+      const dateKey = `${key}-${String(dayNumber).padStart(2, "0")}`;
+      return {
+        number: dayNumber,
+        sessions: sessionsByDate.get(dateKey) ?? [],
+      };
+    });
+    const sessionCount = datedSessions.filter((session) =>
+      session.date.getUTCFullYear() === year && session.date.getUTCMonth() === month
+    ).length;
+
+    months.push({ key, label, days, sessionCount });
+  }
+}
+---
+
+<ScifiLayout title="Session Calendar" description="Calendar of campaign session dates.">
+  <AppShell>
+    <AppNav />
+    <header class="space-y-2">
+      <Text variant="label" class="text-sf-primary">Campaign Log</Text>
+      <Text variant="heading" glow class="max-w-2xl text-xl sm:text-2xl">Session Calendar</Text>
+      <p class="max-w-3xl text-sm text-sf-muted">
+        {datedSessions.length} dated {datedSessions.length === 1 ? "session" : "sessions"}
+        {undatedCount > 0 && ` · ${undatedCount} session ${undatedCount === 1 ? "log has" : "logs have"} no date`}
+      </p>
+    </header>
+
+    <Panel variant="primary" glow layer="raised" class="-mt-4">
+      {months.length > 0 ? (
+        <div class="grid grid-cols-1 gap-8 xl:grid-cols-2">
+          {months.map((month) => (
+            <section aria-labelledby={`month-${month.key}`}>
+              <div class="mb-3 flex items-baseline justify-between gap-3 border-b border-(--sf-border-subtle) pb-2">
+                <h2 id={`month-${month.key}`} class="font-sf-display text-sm uppercase text-sf-text">
+                  {month.label}
+                </h2>
+                <span class="font-sf-mono text-xs text-sf-dim">
+                  {month.sessionCount} {month.sessionCount === 1 ? "session" : "sessions"}
+                </span>
+              </div>
+
+              <div class="grid grid-cols-7 gap-px overflow-hidden rounded-sm border border-(--sf-border-subtle) bg-(--sf-border-subtle)">
+                {weekdays.map((weekday) => (
+                  <div class="bg-[color-mix(in_oklab,var(--sf-bg-elevated)_88%,transparent)] py-2 text-center font-sf-mono text-[0.6rem] uppercase text-sf-dim sm:text-xs">
+                    {weekday}
+                  </div>
+                ))}
+                {month.days.map((day) => day ? (
+                  <div
+                    class:list={[
+                      "min-h-16 bg-[color-mix(in_oklab,var(--sf-bg-panel-solid)_92%,transparent)] p-1 sm:min-h-20 sm:p-1.5",
+                      day.sessions.length > 0 && "bg-[color-mix(in_oklab,var(--sf-color-primary)_10%,var(--sf-bg-panel-solid))]",
+                    ]}
+                    aria-label={`${month.label.split(" ")[0]} ${day.number}${day.sessions.length > 0 ? `, ${day.sessions.map((session) => `Session ${session.session}`).join(", ")}` : ""}`}
+                  >
+                    <span class="block font-sf-mono text-xs text-sf-muted">{day.number}</span>
+                    <div class="mt-1 flex flex-col gap-1">
+                      {day.sessions.map((session) => (
+                        <a
+                          href={session.href}
+                          class="block rounded-[2px] border border-(--sf-border-strong) bg-[color-mix(in_oklab,var(--sf-color-primary)_14%,transparent)] px-1 py-0.5 font-sf-mono text-[0.55rem] leading-tight text-sf-text hover:bg-[color-mix(in_oklab,var(--sf-color-primary)_24%,transparent)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-sf-primary sm:text-[0.65rem]"
+                        >
+                          Session {session.session}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div aria-hidden="true" class="min-h-16 bg-[color-mix(in_oklab,var(--sf-bg-deep)_42%,var(--sf-bg-panel-solid))] sm:min-h-20"></div>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <p class="text-sm text-sf-muted">No session dates are available yet.</p>
+      )}
+    </Panel>
+  </AppShell>
+</ScifiLayout>
