@@ -82,7 +82,11 @@ export default function SessionsPerLevel({ xp }: SessionExperienceProps) {
         },
         {
             label: "Sessions",
-            incrs: [1],
+            splits: (_plot, _axisIndex, min, max) => {
+                const firstTick = Math.ceil(min);
+                const tickCount = Math.max(0, Math.floor(max) - firstTick + 1);
+                return Array.from({ length: tickCount }, (_, index) => firstTick + index);
+            },
             labelFont: "14px 'Share Tech Mono', ui-monospace, monospace",
             labelSize: 50,
             stroke: "rgb(251, 146, 60)",
